@@ -1,4 +1,4 @@
-Create table
+#Create table
 
 CREATE TABLE customers (
     customer_id INTEGER, 
