@@ -20,3 +20,13 @@ BEGIN
 END
 
 select dbo.multiply(20, 11);
+
+
+-- Use case statement to check if a given value is greater than 100 or less than 100
+
+select
+case 
+when 100 > 200 then '100 is greater than 200' 
+when 100 < 200 then '100 is less than 200' 
+else '100 is equal to 200' 
+END
