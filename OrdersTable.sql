@@ -14,3 +14,7 @@ INSERT into orders VALUES(7, '2022-08-31', 5000, 9);
 SELECT * from customers inner JOIN orders on orders.customer_id = customers.customer_id; 
 SELECT * from customers LEFT JOIN orders on orders.customer_id = customers.customer_id;
 SELECT * from customers RIGHT JOIN orders on orders.customer_id = customers.customer_id;
+SELECT * from customers FULL JOIN orders on orders.customer_id = customers.customer_id;
+
+# CROSS join dont require condition
+SELECT * from customers CROSS JOIN orders;
