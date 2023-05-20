@@ -24,3 +24,7 @@ select * from customers;
 
 # Select all the customers where first name starts with S and city is Chennai
 SELECT * FROM customers WHERE first_name like 'S%' AND city = 'Chennai';
+
+# Select first and last names of all the customers;
+SELECT first_name as [FirstName], last_name as [LastName] from customers;
+
