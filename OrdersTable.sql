@@ -18,3 +18,7 @@ SELECT * from customers FULL JOIN orders on orders.customer_id = customers.custo
 
 # CROSS join dont require condition
 SELECT * from customers CROSS JOIN orders;
+
+# Update order amount to 1 lakh where order id is 7
+update orders set amount = 100000 where order_id = 7
+
