@@ -1,3 +1,5 @@
+https://www.javatpoint.com/dbms-sql-set-operation
+
 drop TABLE programmers;
 CREATE TABLE programmers(id INTEGER, prof1 varchar(100), prof2 varchar(100));
 
