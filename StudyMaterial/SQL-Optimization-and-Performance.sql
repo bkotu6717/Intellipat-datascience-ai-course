@@ -105,6 +105,8 @@ INSERT INTO PROGRAMMER VALUES
 
 -- 5. List each PROFIT with the number of Programmers having that PROF and the number of the packages in that PROF.
     -- C, NO_OF_PPOGRAMMERS, NO_PACKAGES_DEVELOPED, PROFIT
+    
+    -- Wrong answer
 
     WITH PRG_PRF AS
     (SELECT P.PNAME AS PGMR, P.PROF1 AS PRF FROM PROGRAMMER P
