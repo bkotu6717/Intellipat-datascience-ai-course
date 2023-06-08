@@ -19,7 +19,6 @@
     SELECT * FROM SOFTWARE WHERE PNAME = 'RAMESH';
 
 -- 6. Display the Details of Packages for which Development Cost have been recovered.
-    SELECT * FROM SOFTWARE 
     SELECT *, (SCOST*SOLD) AS TOTAL_SALE FROM SOFTWARE WHERE (SCOST*SOLD) > DCOST;
 
 -- 7. Display the details of the Programmers Knowing C.
