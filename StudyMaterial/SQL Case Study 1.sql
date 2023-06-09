@@ -112,16 +112,27 @@
 
  
 -- 18. Find the state wise profit and sales along with the product name.
-    SELECT  
-        L.STATE, 
-        P.PRODUCT, 
-        SUM(F.SALES) AS [SALES], 
-        SUM(F.PROFIT) AS [PROFIT] 
-    FROM LOCATIONS L
-    INNER JOIN FACTS F ON L.AREA_CODE = F.AREA_CODE
-    INNER JOIN PRODUCTS P ON F.PRODUCTID = P.PRODUCTID
-    GROUP BY L.STATE, P.PRODUCT
-    ORDER BY L.STATE
+    SELECT 
+        L.[State], 
+        P.Product, 
+        STATE_WISE_PROFIT_SALE.SALES, 
+        STATE_WISE_PROFIT_SALE.PROFIT  
+    FROM
+    (
+        SELECT 
+            F.ProductID, 
+            F.[Area_Code], 
+            SUM(Sales) AS SALES, 
+            SUM(Profit) AS PROFIT 
+        FROM facts F
+        INNER JOIN Locations L ON L.Area_Code = F.Area_Code
+        INNER JOIN Products P ON P.ProductId = F.ProductId
+        GROUP BY F.ProductID, F.[Area_Code]
+    ) STATE_WISE_PROFIT_SALE
+    INNER JOIN Products P ON P.ProductId = STATE_WISE_PROFIT_SALE.ProductId
+    INNER JOIN Locations L ON L.Area_Code = STATE_WISE_PROFIT_SALE.Area_Code
+    ORDER BY STATE_WISE_PROFIT_SALE.ProductId, STATE_WISE_PROFIT_SALE.Area_Code
+
 -- 19. If there is an increase in sales of 5%, calculate the increased sales.
     SELECT SALES, SALES+(SALES*(0.05)) AS [increase in sales of 5%] FROM FACTS;
 
@@ -156,7 +167,7 @@
         (
         CASE
             WHEN (TOTAL_EXPENSES < 60) THEN 'PROFT'
-            WHEN (TOTAL_EXPENSES >= 60) THEN 'LOSS'
+            WHEN (TOTAL_EXPENSES > 60) THEN 'LOSS'
             ELSE 'BALANCED'
         END
         ) AS [PROFIT OR LOSS]
@@ -164,18 +175,11 @@
 
 -- 23. Give the total weekly sales value with the date and product ID details. Use roll-up to pull the data in hierarchical order.
     SELECT 
-        [Date], 
-        [PRODUCTID], 
-        SUM(WEEKLY_SALES) [SUM_OF_WEEKLY_SALES_BY_DATE_AND_PRODUCT_ID] 
-    FROM
-        (
-            SELECT 
-                [DATE], 
-                PRODUCTID, SUM(SALES) AS WEEKLY_SALES 
-            FROM FACTS
-            GROUP BY [Date], PRODUCTID, DATENAME(WEEKDAY, [Date])
-        ) 
-    TEMP GROUP BY ROLLUP([Date], [PRODUCTID]);
+        [DATE], 
+        PRODUCTID, 
+        SUM(SALES) AS WEEKLY_SALES 
+    FROM FACTS
+    GROUP BY ROLLUP([Date], PRODUCTID, DATENAME(WEEKDAY, [Date]))
 
 
 -- 24. Apply union and intersection operator on the tables which consist of attribute area code.
