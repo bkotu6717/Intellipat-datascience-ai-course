@@ -114,11 +114,11 @@
     SELECT * FROM fn_txn_data();
 
 -- 12. Create a TRY...CATCH block to print a region id and region name in a single column.
-        
+    -- Just try CATCH 
     BEGIN TRY
-        SELECT Continent.region_id FROM Continent
-        UNION ALL
         SELECT Continent.region_name FROM Continent
+        UNION ALL
+        SELECT Continent.region_id FROM Continent
     END TRY
 
     BEGIN CATCH
@@ -129,6 +129,20 @@
             ERROR_PROCEDURE() AS ErrorProcedure,
             ERROR_LINE() AS ErrorLine,
             ERROR_MESSAGE() AS ErrorMessage;
+    END CATCH
+
+    -- Catch and convert
+
+    BEGIN TRY
+        SELECT Continent.region_name FROM Continent
+        UNION ALL
+        SELECT Continent.region_id FROM Continent
+    END TRY
+
+    BEGIN CATCH
+        SELECT Continent.region_name FROM Continent
+        UNION ALL
+        SELECT CAST(Continent.region_id as varchar(10)) FROM Continent
     END CATCH
 
 -- 13. Create a TRY...CATCH block to insert a value in the Continent table.
@@ -147,8 +161,96 @@
     END CATCH
 
 -- 14. Create a trigger to prevent deleting a table in a database.
+    CREATE TRIGGER safety   
+    ON DATABASE   
+    FOR DROP_TABLE 
+    AS   
+    PRINT 'You must disable Trigger "safety" to drop or alter tables!'   
+    ROLLBACK;  
+    GO  
+    DISABLE TRIGGER safety ON DATABASE;  
+    GO  
+    ENABLE TRIGGER safety ON DATABASE;  
+    GO
+
+    DROP TABLE Customers;
+
+
 -- 15. Create a trigger to audit the data in a table.
+    
+    GO
+    CREATE TABLE AuditContinent(
+        region_id integer, 
+        region_name VARCHAR(20),
+        updated_by nvarchar(128),
+        updated_on datetime
+    )
+    GO
+    CREATE TRIGGER tblTriggerAuditRecord ON Continent
+    AFTER UPDATE, INSERT
+    AS
+    BEGIN
+    INSERT INTO AuditContinent 
+    (region_id, region_name, updated_by, updated_on)
+    SELECT t.region_id, t.region_name, SUSER_SNAME(), getdate() 
+    FROM  Continent t 
+    end
+
+    GO
+    INSERT INTO Continent VALUES (7, 'X')
+    INSERT INTO Continent VALUES (8, 'Y')
+    INSERT INTO Continent VALUES (9, 'Z')
+    GO
+
+    SELECT * FROM Continent
+    SELECT * FROM AuditContinent
+
+    UPDATE Continent 
+    SET region_name='K'
+    WHERE region_id = 9
+    GO
+
+    SELECT * FROM Continent
+    SELECT * FROM AuditContinent
+
 -- 16. Create a trigger to prevent login of the same user id in multiple pages.
+
+    CREATE TRIGGER Prevent_login
+    ON ALL SERVER WITH EXECUTE AS 'sa'
+    FOR LOGON
+    AS
+    BEGIN
+        CREATE TABLE #active_users
+        (
+            spit INTEGER,
+            ecid INTEGER,
+            status VARCHAR(100),
+            loginame VARCHAR(100),
+            hostname VARCHAR(100),
+            blk VARCHAR(100),
+            db_name VARCHAR(200),
+            cmd VARCHAR(1000),
+            request_id INTEGER
+        )
+        INSERT INTO #active_users EXEC sp_who
+
+      BEGIN
+        DECLARE @current_user VARCHAR(100)
+        set @current_user = ORIGINAL_LOGIN()
+        if exists(select loginame from #active_users where loginame = @current_user)
+            BEGIN
+                PRINT 'already logged in'
+                DROP TABLE #active_users
+                ROLLBACK; --Disconnect the session
+            END
+        ELSE
+            BEGIN
+                RETURN
+            END
+      END
+    END
+
+    -- DROP TRIGGER Prevent_login ON ALL SERVER;
 
 -- 17. Display top n customers on the basis of transaction type.
     WITH CTE AS
