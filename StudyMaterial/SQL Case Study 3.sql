@@ -245,6 +245,7 @@
             END
         ELSE
             BEGIN
+                DROP TABLE #active_users
                 RETURN
             END
       END
