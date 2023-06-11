@@ -37,7 +37,6 @@
     WHERE YEAR(SOH.OrderDate) = 2011 AND MONTH(SOH.OrderDate) = 5
 
 -- d. Get the total sales made in May 2011
-    -- Get the count of sales
     SELECT 
         SUM(SOH.TotalDue) AS [Total sales made in May 2011]
     FROM Sales.SalesOrderHeader SOH
