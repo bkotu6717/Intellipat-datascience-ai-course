@@ -211,7 +211,7 @@
 -- 26. Change the product type from coffee to tea where product ID is 1 and undo it.
     BEGIN TRANSACTION
        UPDATE Products SET Product_Type = 'Tea' WHERE Product_Type = 'Coffee'
-    ROLLBACK;
+    ROLLBACK;   
 
 -- 27. Display the date, product ID and sales where total expenses are between 100 to 200.
     SELECT [Date], PRODUCTID, SALES FROM FACTS 
