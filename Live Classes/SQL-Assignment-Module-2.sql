@@ -5,7 +5,6 @@
    SELECT TOP 1 SW.TITLE, SUM(SW.SOLD) FROM SOFTWARE SW GROUP BY SW.TITLE ORDER BY SUM(SW.SOLD) DESC;
 
 -- 2. Display lowest course fee.
-   SELECT MIN(COURSE_FEE) FROM studies
    SELECT TOP 1 * FROM studies WHERE COURSE_FEE =  (SELECT MIN(COURSE_FEE) FROM studies)
 
 -- 3. How old is the oldest male programmer?

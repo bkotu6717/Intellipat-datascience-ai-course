@@ -33,13 +33,25 @@
     GROUP BY P.DOJ
 
 -- 4. Who are the programmers who have the same Prof2?
-    SELECT PNAME FROM PROGRAMMER WHERE PROF1 = PROF2
-
+    SELECT 
+        PNAME 
+    FROM PROGRAMMER 
+    WHERE PROF2 = ANY(
+        SELECT 
+            PROF2 
+        FROM PROGRAMMER
+        GROUP BY PROF2 HAVING COUNT(*) >1
+    );
 -- 5. How many packages were developed by the person who developed the cheapest package, where did he/she study?
     WITH CTE AS
     (
         SELECT S.PNAME, COUNT(*) AS CHEAPEST_PACKAGES_DEVELOPED FROM SOFTWARE S
-        WHERE S.DCOST = (SELECT MIN(DCOST) FROM SOFTWARE)
+        WHERE S.DCOST = (
+            SELECT 
+                MIN(DCOST) 
+            FROM SOFTWARE 
+            WHERE SOFTWARE.PNAME = S.PNAME
+        )
         GROUP BY S.PNAME
     )
     SELECT CTE.PNAME, ST.INSTITUTE, CTE.CHEAPEST_PACKAGES_DEVELOPED FROM CTE

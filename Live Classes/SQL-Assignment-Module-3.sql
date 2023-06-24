@@ -7,7 +7,6 @@
     SELECT * FROM PROGRAMMER WHERE PROF1 NOT IN ('Clipper', 'COBOL', 'PASCAL') AND PROF2 NOT IN ('Clipper', 'COBOL', 'PASCAL')
 
 -- 3. Display each language name with AVG Development Cost, AVG Selling Cost and AVG Price per Copy.
-    
     SELECT DEVELOPIN, 
     AVG(DCOST) AS AVG_DEV_COST, 
     SUM(SCOST*SOLD)/SUM(SOLD) AS AVG_SELLING_COST, 
@@ -24,9 +23,6 @@
 
 -- 5. List each PROFIT with the number of Programmers having that PROF and the number of the packages in that PROF.
     -- C, NO_OF_PPOGRAMMERS, NO_PACKAGES_DEVELOPED, PROFIT
-    
-    -- Wrong answer
-
     WITH PRG_PRF AS
     (SELECT P.PNAME AS PGMR, P.PROF1 AS PRF FROM PROGRAMMER P
     UNION ALL
@@ -131,8 +127,9 @@
 
 -- 25. Which Institute conducts costliest course.
     SELECT INSTITUTE FROM studies WHERE COURSE_FEE = (SELECT MAX(COURSE_FEE) FROM studies)
-    SELECT TOP 1INSTITUTE FROM studies ORDER BY COURSE_FEE DESC;
+    SELECT TOP 1 INSTITUTE FROM studies ORDER BY COURSE_FEE DESC;
 
 -- 26. What is the Costliest course?
     SELECT COURSE FROM studies WHERE COURSE_FEE = (SELECT MAX(COURSE_FEE) FROM studies)
     SELECT TOP 1 COURSE FROM studies ORDER BY COURSE_FEE DESC;
+

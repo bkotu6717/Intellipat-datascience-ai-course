@@ -29,7 +29,6 @@
 
 -- 7. Display each programmer’s name, costliest and cheapest Packages Developed by him or her.
     
-    -- PENDING
     SELECT P.PNAME, MIN(DCOST) AS CHEPEST_PKG, MAX(DCOST) AS COSTLIEST_PKG FROM PROGRAMMER P 
     LEFT JOIN SOFTWARE S ON S.PNAME = P.PNAME
     WHERE S.DEVELOPIN IN (P.PROF1, P.PROF2)
@@ -160,3 +159,4 @@
     WHERE (PROF1 = 'COBOL' OR PROF2 = 'COBOL') 
     AND GENDER = 'F'
     AND SALARY = (SELECT MAX(SALARY) FROM PROGRAMMER WHERE (PROF1 = 'COBOL' OR PROF2 = 'COBOL'))
+
