@@ -28,7 +28,7 @@ cd ../..
 ls -l
 
 # drwxr-xr-x   7 admin  staff   224 Aug  9 07:24 Intellipat-datascience-ai-course
-# d- stands for directory
+# d - stands for directory
 # for a file it will be _
 
 # Lists the hidden files as well
@@ -61,5 +61,60 @@ rm file1
 
 # Delete a directory
 rm -rf directory
+
+# Find currently logged in user
+whoami
+
+# Install ngnix
+apt install nginx
+
+# Check running processes created by user
+ps
+# Check all the running processing created by system as well
+ps -e
+
+# See the terminal command history
+history
+
+# Clear the termmial command history
+history -p # On Mac
+history -c # On Ubuntu 
+history -d 3 # Deletes 3rd command in history
+
+# Set permissions
+# chmod 
+# r w x - read write execute
+# 0 0 0 - No permission
+# 0 0 1 - Only execute
+# 0 1 0 - Only write
+# 1 0 0 - Only read
+# 0 1 1 - Only write and execute
+# 1 1 0 - Only read and write
+# 1 1 1 - Read, Write and Execute
+
+chmod 111 file1 - sets all permissions
+chmod +rwx file1 -sets all the permissions
+
+
+# Man command helps you to get help on given command
+man ls
+
+# Grep gets pattern matching data
+cat file1
+# line1
+# line2
+# lin3
+
+# hello
+# Hello
+# HELLO WORLD
+# HEELOWORLD
+grep -w HELLO file1
+# Gives lines with words HELLO
+# HELLO WORLD
+grep -i HELLO file1
+# Gets words with case insestive match
+
+
 
 
