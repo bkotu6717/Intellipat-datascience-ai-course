@@ -115,6 +115,3 @@ grep -w HELLO file1
 grep -i HELLO file1
 # Gets words with case insestive match
 
-
-
-
