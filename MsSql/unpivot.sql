@@ -114,3 +114,61 @@ UNPIVOT
 (
     Price FOR PLanguage IN ([C], [JAVA], [PYTHON], [Placement 100])
 ) Y
+
+
+GO
+CREATE TABLE #BookSalesV2
+(BookType VARCHAR(20), BookSubtype VARCHAR(20), 
+  SalesYear INT, BookSales MONEY, Verified BIT);
+GO
+ 
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Adults', 2014, 11201, 1);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Children', 2014, 12939, 0);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Adults', 2013, 10436, 1);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Children', 2013, 9346, 0);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Adults', 2014, 7214, 0);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Children', 2014, 5800, 1);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Adults', 2013, 8922, 1);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Children', 2013, 7462, 0);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Adults', 2014, 14209, 0);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Children', 2014, 11489, 0);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Adults', 2013, 9909, 1);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'Children', 2013, 8726, 0);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Adults', 2014, 4399, 1);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Children', 2014, 5248, 0);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Adults', 2013, 7740, 0);
+INSERT INTO #BookSalesV2 VALUES('Nonfiction', 'Children', 2013, 8267, 1);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'YA', 2014, 9854, 0);
+INSERT INTO #BookSalesV2 VALUES('Fiction', 'YA', 2013, 8756, 1);
+
+SELECT * FROM #BooKSalesV2
+
+select BookType, BookSubtype, [2013], [2014] FROM
+(
+    select BookType, BookSubtype, SalesYear, [BookSales] as sales FROM #BookSalesV2
+) x
+PIVOT
+(
+    SUM(sales) FOR SalesYear IN ([2013], [2014])
+)y
+
+
+select BookType, BookSubtype, [2013], [2014] into pivoted_book_sales FROM
+(
+    select BookType, BookSubtype, SalesYear, [BookSales] as sales FROM #BookSalesV2
+) x
+PIVOT
+(
+    SUM(sales) FOR SalesYear IN ([2013], [2014])
+)y
+
+select * from pivoted_book_sales
+
+SELECT BookType, BookSubType, Price, [SaleYear] FROM (
+    select BookType, BookSubType, [2013], [2014] from pivoted_book_sales
+) x
+UNPIVOT
+(
+    Price FOR SaleYear IN ([2013], [2014])
+) y
+
