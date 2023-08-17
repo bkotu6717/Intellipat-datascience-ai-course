@@ -65,3 +65,52 @@ UNPIVOT
 (
     Sale for Country IN ([India], [US], [UK])
 ) y
+
+
+
+SELECT * from geeksforgeeks;
+
+-- Spread the CourseName column
+SELECT CourseCategory, [C], [JAVA], [Python], [Placement 100] FROM
+(
+    select CourseCategory, CourseName, Price FROM geeksforgeeks
+) x
+
+PIVOT
+(
+    SUM(Price) FOR COurseName IN ([C], [JAVA], [Python], [Placement 100])
+) y
+
+-- Spread the course category column
+SELECT CourseName, [Programming], [InterviewPreparation] from 
+(
+    SELECT COurseName, CourseCategory, Price from geeksforgeeks
+)x
+PIVOT
+(
+    SUM(Price) FOR CourseCategory IN ([Programming], [InterviewPreparation])
+) y
+
+-- Insert the pivot data into a new table
+
+SELECT * from geeksforgeeks
+
+SELECT CourseCategory, [C], [JAVA], [PYTHON], [Placement 100] INTO pivoted_table FROM
+(
+    select CourseName, CourseCategory, Price FROM geeksforgeeks
+) x
+PIVOT
+(
+    SUM(Price) FOR COurseName IN ([C], [JAVA], [PYTHON], [Placement 100])
+) y
+
+select * from pivoted_table
+
+SELECT CourseCategory, PLanguage, Price FROM
+(
+    select * FROM pivoted_table 
+) x
+UNPIVOT
+(
+    Price FOR PLanguage IN ([C], [JAVA], [PYTHON], [Placement 100])
+) Y
