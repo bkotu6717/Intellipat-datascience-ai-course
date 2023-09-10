@@ -178,14 +178,14 @@ select * from Studies
     WHERE PROF1 = 'C' OR PROF2 = 'C';
 -- 19. How many programmers know either COBOL or Pascal?
     SELECT 
-        * 
-    FROM Programmer
-    WHERE PROF1 IN ('COBOL', 'PASCAL') OR PROF2 IN  ('COBOL', 'PASCAL')
+		* 
+	FROM Programmer
+	WHERE PROF1 IN ('COBOL', 'PASCAL') OR PROF2 IN  ('COBOL', 'PASCAL')
 -- 20. How many programmers don’t know Pascal and C?
     SELECT 
-        * 
-    FROM Programmer
-    WHERE PROF1 NOT IN ('C', 'PASCAL') AND PROF2 NOT IN  ('C', 'PASCAL')
+		* 
+	FROM Programmer
+	WHERE PROF1 NOT IN ('C', 'PASCAL') AND PROF2 NOT IN  ('C', 'PASCAL')
 -- 21. How old is the oldest male programmer?
     SELECT DATEDIFF(YEAR, MIN(DOB), GETDATE()) AS [AGE IN YEARS] FROM Programmer
 -- 22. What is the average age of female programmers?
@@ -227,9 +227,9 @@ select * from Studies
     WHERE SALARY BETWEEN 2000 AND 4000
 -- 29. Display the details of those who don’t know Clipper, COBOL or Pascal.
     SELECT 
-        * 
-    FROM Programmer
-    WHERE PROF1 NOT IN ('CLIPPER', 'COBAL', 'PASCAL') AND PROF2 NOT IN  ('CLIPPER', 'COBAL', 'PASCAL')
+		* 
+	FROM Programmer
+	WHERE PROF1 NOT IN ('CLIPPER', 'COBAL', 'PASCAL') AND PROF2 NOT IN  ('CLIPPER', 'COBAL', 'PASCAL')
 -- 30. Display the cost of packages developed by each programmer.
     SELECT 
         PNAME, 
@@ -380,7 +380,7 @@ select * from Studies
     )
 
 -- 47. Display the names of the highest paid programmers for each language.
-    drop table #temp_table2
+
     WITH CTE AS
         (
             SELECT
@@ -403,23 +403,6 @@ select * from Studies
         #temp_table2.MAX_SALARY
     FROM Programmer P, #temp_table2
     WHERE P.SALARY = #temp_table2.MAX_SALARY AND P.PROF1 = #temp_table2.LANG OR P.PROF2 = #temp_table2.LANG
-    GO
-    WITH cte AS (
-      SELECT PNAME, SALARY, PROF1 PROF FROM programmer
-      UNION ALL
-      SELECT PNAME, SALARY, PROF2  FROM programmer
-    )
-    SELECT p1.PNAME, p1.PROF, p1.SALARY
-    FROM cte p1
-    LEFT JOIN cte p2
-      ON (p1.PROF = p2.PROF AND p1.SALARY < p2.SALARY)
-    WHERE p2.PNAME IS NULL
-    ORDER BY p1.PROF
-
-    -- Inserts blank record in p2 side if p2 salary is lesser
-    SELECT * FROM Programmer p1 
-    LEFT JOIN Programmer p2 ON (p1.PROF1 = p2.PROF1) AND (p1.SALARY < p2.SALARY)
-
 
 -- 48. Who is the least experienced programmer?
     SELECT
@@ -512,13 +495,13 @@ select * from Studies
 -- 54. Which institute has the most number of students?
 
     WITH cte1
-    AS 
-    (
-    SELECT INSTITUTE, COUNT(PNAME) AS [no. of students], RANK() OVER(ORDER by count(PNAME) DESC) AS ranks FROM Studies
-    GROUP BY INSTITUTE
-    )
-    SELECT INSTITUTE, [no. of students] FROM cte1
-    WHERE ranks = 1
+	AS 
+	(
+	SELECT INSTITUTE, COUNT(PNAME) AS [no. of students], RANK() OVER(ORDER by count(PNAME) DESC) AS ranks FROM Studies
+	GROUP BY INSTITUTE
+	)
+	SELECT INSTITUTE, [no. of students] FROM cte1
+	WHERE ranks = 1
 
 -- 55. What is the costliest course?
     SELECT
@@ -531,13 +514,13 @@ select * from Studies
     )
 -- 56. Which course has been done by the most number of students?
     WITH cte1
-    AS 
-    (
-    SELECT COURSE, COUNT(PNAME) AS [no. of students], RANK() OVER(ORDER by count(PNAME) DESC) AS ranks FROM Studies
-    GROUP BY COURSE
-    )
-    SELECT cte1.COURSE, [no. of students] FROM cte1
-    WHERE ranks = 1
+	AS 
+	(
+	SELECT COURSE, COUNT(PNAME) AS [no. of students], RANK() OVER(ORDER by count(PNAME) DESC) AS ranks FROM Studies
+	GROUP BY COURSE
+	)
+	SELECT cte1.COURSE, [no. of students] FROM cte1
+	WHERE ranks = 1
 -- 57. Which institute conducts the costliest course?
     SELECT
         COURSE
@@ -607,552 +590,28 @@ select * from Studies
     )
 
 -- 62. Which package has the lowest selling cost?
-    SELECT
-        TITLE
-    FROM Software s
-    WHERE SCOST = (
-        SELECT 
-            MIN(SCOST)
-        FROM Software
-    )
--- 63. Who developed the package that has sold the least number of copies?
-    SELECT 
-        PNAME
-    FROM Software
-    WHERE SOLD = (
-        SELECT
-            MIN(SOLD)
-        FROM Software
-    )
--- 64. Which language has been used to develop the package which has the highest sales amount?
-    SELECT 
-        DEVELOPIN
-    FROM Software
-    WHERE SOLD*SCOST = (
-        SELECT
-            MAX(SCOST*SOLD)
-        FROM Software
-    )
--- 65. How many copies of the package that has the least difference between development and selling cost were sold?
-    SELECT 
-        SOLD
-    FROM Software
-    WHERE ABS(DCOST-SCOST) = (
-        SELECT
-            ABS(MIN(DCOST-SCOST))
-        FROM Software
-    )
--- 66. Which is the costliest package developed in Pascal?
-    SELECT
-        TITLE
-    FROM Software S
-    WHERE S.DEVELOPIN = 'PASCAL'
-    AND S.DCOST = (
-        SELECT
-            MAX(DCOST)
-         FROM Software
-        WHERE DEVELOPIN = 'PASCAL'
-    )
--- 67. Which language was used to develop the most number of packages?
-    WITH cte as
-    (
-        SELECT
-            DEVELOPIN,
-            RANK() OVER(
-                ORDER BY COUNT(*) DESC
-            ) AS Ranks
-        FROM Software
-        GROUP BY DEVELOPIN
-    )
-    SELECT 
-        DEVELOPIN 
-    FROM cte 
-    WHERE Ranks = 1
--- 68. Which programmer has developed the highest number of packages?
-    WITH cte as
-    (
-        SELECT
-            PNAME,
-            RANK() OVER(
-                ORDER BY COUNT(*) DESC
-            ) AS Ranks
-        FROM Software
-        GROUP BY PNAME
-    )
-    SELECT 
-        PNAME 
-    FROM cte 
-    WHERE Ranks = 1
--- 69. Who is the author of the costliest package?
-    SELECT
-        PNAME
-    FROM Software
-    WHERE SCOST = (
-        SELECT
-            MAX(SCOST)
-        FROM Software
-    )
--- 70. Display the names of the packages which have sold less than the average number of copies.
-    SELECT
-        TITLE
-    FROM Software
-    WHERE SOLD < (
-        SELECT
-            AVG(Cast(SOLD as Float))
-        FROM Software
-    )
--- 71. Who are the authors of the packages which have recovered more than double the development cost?
-    SELECT
-        DISTINCT PNAME,
-        TITLE
-    FROM Software
-    WHERE SCOST*SOLD > 2*DCOST
-
--- 72. Display the programmer names and the cheapest packages developed by them in each language.
-    SELECT
-        DISTINCT PNAME,
-        TITLE
-    FROM Software
-    WHERE SCOST = (
-        SELECT
-            MIN(SCOST)
-        FROM Software
-    )
--- 73. Display the language used by each programmer to develop the highest selling and lowest selling package.
-    SELECT
-        PNAME,
-        DEVELOPIN,
-        SOLD
-    FROM Software
-    WHERE SOLD = (
-        SELECT
-            MIN(SOLD)
-        FROM Software
-    )
-    OR
-    SOLD = (
-        SELECT
-            MAX(SOLD)
-        FROM Software
-    )
--- 74. Who is the youngest male programmer born in 1965?
-    SELECT 
-        PNAME
-    FROM Programmer
-    WHERE DOB = (
-        SELECT
-            MAX(DOB)
-        FROM Programmer
-        WHERE YEAR(DOB) = 1965
-    )
--- 75. Who is the oldest female programmer who joined in 1992?
-    SELECT 
-        PNAME
-    FROM Programmer
-    WHERE DOB = (
-        SELECT
-            MIN(DOB)
-        FROM Programmer
-        WHERE YEAR(DOJ) = 1992
-    )
--- 76. In which year was the most number of programmers born?
-    WITH cte as
-    (
-        SELECT
-            YEAR(DOB) as [Birth Year],
-            RANK() OVER (ORDER BY COUNT(*) DESC) AS Ranks
-        FROM Programmer
-        GROUP BY YEAR(DOB)
-    )
-    SELECT 
-        [Birth Year]
-    FROM cte
-    WHERE Ranks = 1
--- 77. In which month did the most number of programmers join?
-    WITH cte as
-    (
-        SELECT
-            MONTH(DOJ) as [Joining Month],
-            RANK() OVER (ORDER BY COUNT(*) DESC) AS Ranks
-        FROM Programmer
-        GROUP BY MONTH(DOJ)
-    )
-    SELECT 
-        [Joining Month]
-    FROM cte
-    WHERE Ranks = 1
--- 78. In which language are most of the programmer’s proficient?
     
---     WITH x AS 
--- (
---     SELECT * FROM MyTable
--- ), 
--- y AS 
--- (
---     SELECT * FROM x
--- )
--- SELECT * FROM y
-
-    WITH cte AS
-    (
-        SELECT PROF1 FROM Programmer
-        UNION ALL
-        SELECT PROF2 FROM Programmer
-    ),
-    cte2 AS
-    (
-        SELECT 
-            PROF1,
-            RANK() OVER( ORDER BY COUNT(*) DESC) as ranks
-        FROM cte
-        GROUP BY PROF1
-    )
-    SELECT 
-        * 
-    FROM cte2 
-    WHERE ranks = 1;
-
-
--- 79. Who are the male programmers earning below the average salary of female programmers?
-    SELECT
-        PNAME
-    FROM Programmer
-    WHERE GENDER = 'M' AND SALARY < (
-        SELECT
-            AVG(SALARY)
-        FROM Programmer
-        WHERE GENDER = 'F'
-    )
-
--- 80. Who are the female programmers earning more than the highest paid?
-    SELECT
-        PNAME
-    FROM Programmer
-    WHERE SALARY > (
-        SELECT
-            MAX(SALARY)
-        FROM Programmer
-    ) AND GENDER = 'F'
--- 81. Which language has been stated as the proficiency by most of the programmers?
-
-    WITH cte AS
-    (
-        SELECT PROF1 FROM Programmer
-        UNION ALL
-        SELECT PROF2 FROM Programmer
-    ),
-    cte2 AS
-    (
-        SELECT 
-            PROF1,
-            RANK() OVER( ORDER BY COUNT(*) DESC) as ranks
-        FROM cte
-        GROUP BY PROF1
-    )
-    SELECT 
-        * 
-    FROM cte2 
-    WHERE ranks = 1;
--- 82. Display the details of those who are drawing the same salary.
-    SELECT 
-        SALARY,
-        STRING_AGG(P.PNAME, ', ') as [PROGRAMMERS]
-    FROM Programmer p
-    GROUP BY P.SALARY
-    HAVING COUNT(*) > 1
--- 83. Display the details of the software developed by the male programmers earning more than 3000.
-    SELECT
-        S.*
-    FROM Software S
-    INNER JOIN Programmer P ON S.PNAME = P.PNAME
-    WHERE P.GENDER = 'M' AND SALARY > 3000
--- 84. Display the details of the packages developed in Pascal by the female programmers.
-    SELECT
-        S.*
-    FROM Software S
-    INNER JOIN Programmer P ON S.PNAME = P.PNAME
-    WHERE P.GENDER = 'F' AND S.DEVELOPIN = 'PASCAL'
--- 85. Display the details of the programmers who joined before 1990.
-    SELECT
-        *
-    FROM Programmer
-    WHERE YEAR(DOJ) < 1990
--- 86. Display the details of the software developed in C by the female  programmers at Pragathi.
-    SELECT
-        S.*
-    FROM Software S
-    INNER JOIN Programmer P ON P.PNAME = S.PNAME
-    INNER JOIN Studies ST ON ST.PNAME = S.PNAME
-    WHERE P.GENDER = 'F' AND ST.INSTITUTE = 'PRAGATHI' AND S.DEVELOPIN = 'C'
--- 87. Display the number of packages, number of copies sold and sales value of each programmer institute wise.
-    SELECT
-        P.PNAME,
-        ST.INSTITUTE,
-        COUNT(S.TITLE) AS [number of packages],
-        SUM(S.SOLD) AS [number of copies sold],
-        SUM(S.SOLD*S.SCOST) AS [sales value]
-    FROM Software S
-    INNER JOIN Programmer P ON P.PNAME = S.PNAME
-    INNER JOIN Studies ST ON ST.PNAME = S.PNAME
-    GROUP BY P.PNAME, ST.INSTITUTE
-GO
-
--- 88. Display the details of the software developed in dBase by male  programmers who belong to the institute 
--- in which the most number of programmers studied.
-
-WITH cte AS
-    (
-        SELECT 
-            INSTITUTE,
-        RANK() OVER(ORDER BY COUNT(*) DESC) AS ranks
-        FROM Studies
-        GROUP BY INSTITUTE
-    )
-
-SELECT
-    S.TITLE
-FROM Software s
-INNER JOIN Programmer P ON P.PNAME = s.PNAME
-INNER JOIN Studies St On St.PNAME = S.PNAME
-WHERE P.Gender = 'M' AND s.DEVELOPIN = 'DBASE' AND St.INSTITUTE IN
-    (
-        SELECT INSTITUTE FROM cte WHERE ranks = 1
-
-    )
-
--- 89. Display the details of the software developed by the male programmers
--- born before 1965 and female programmers born after 1975.
-    WITH cte AS
-    (
-        SELECT
-        P.*
-        FROM Programmer P
-        WHERE P.gender = 'M' AND YEAR(P.DOB) < 1965
-        UNION ALL
-        SELECT
-        P.*
-        FROM Programmer P
-        WHERE P.gender = 'F' AND YEAR(P.DOB) > 1975
-    )
-    SELECT 
-        S.* 
-    FROM cte 
-    INNER JOIN Software s ON cte.PNAME = s.PNAME
-
--- 90. Display the details of the software that has been developed in the
--- language which is neither the first nor the second proficiency of the
--- programmers.
-    WITH cte AS
-    (
-        SELECT 
-            PROF1
-        FROM Programmer
-        UNION
-        SELECT 
-            PROF2
-        FROM Programmer
-    )
-
-    SELECT 
-        *
-    FROM Software
-    WHERE DEVELOPIN NOT IN(
-        SELECT
-            *
-        FROM cte
-    )
-
--- 91. Display the details of the software developed by the male students at Sabhari.
-    SELECT
-        S.*
-    FROM Software s
-    INNER JOIN Programmer P ON P.PNAME = s.PNAME
-    INNER JOIN Studies St On St.PNAME = S.PNAME
-    WHERE P.Gender = 'M' AND St.INSTITUTE = 'SABHARI'
--- 92. Display the names of the programmers who have not developed any packages.
-    SELECT
-        P.*
-    FROM Programmer P
-    LEFT JOIN Software s ON P.PNAME = s.PNAME
-    WHERE S.TITLE IS NULL
-
--- 93. What is the total cost of the software developed by the programmers of Apple?
-    SELECT 
-        SUM(S.DCOST)
-    FROM Software S
-    INNER JOIN Studies St ON st.PNAME = S.PNAME
-    WHERE St.INSTITUTE = 'APPLE'
--- 94. Who are the programmers who joined on the same day?
-    SELECT
-        DATEPART(WEEKDAY, DOJ) AS [WEEKDAY],
-        STRING_AGG(PNAME, ', ') as [PROGRAMMERS]
-    FROM Programmer
-    GROUP BY DATEPART(WEEKDAY, DOJ)
-    HAVING COUNT(*) > 1
-
--- 95. Who are the programmers who have the same Prof2?
-
-    SELECT
-        STRING_AGG(PNAME, ', ') as [PROGRAMMERS],
-        PROF2
-    FROM Programmer
-    GROUP BY PROF2
-    HAVING COUNT(*) > 1
-
--- 96. Display the total sales value of the software institute wise.
-    SELECT
-        ST.INSTITUTE, 
-        S.TITLE,
-        SUM(S.SCOST*S.SOLD) AS [SALES]
-    FROM Software s
-    INNER JOIN Studies ST ON s.PNAME = ST.PNAME
-    GROUP BY ST.INSTITUTE, S.TITLE  
--- 97. In which institute does the person who developed the costliest package study?
-    SELECT
-        ST.INSTITUTE
-    FROM Software s
-    INNER JOIN Studies ST ON s.PNAME = ST.PNAME
-    WHERE S.DCOST = (
-        SELECT
-            MAX(DCOST)
-        FROM Software
-    )
--- 98. Which language listed in Prof1, Prof2 has not been used to develop any package?
-
-     WITH cte AS
-    (
-        SELECT 
-            PROF1
-        FROM Programmer
-        UNION
-        SELECT 
-            PROF2
-        FROM Programmer
-    )
-
-    SELECT 
-        *
-    FROM Software
-    WHERE DEVELOPIN NOT IN(
-        SELECT
-            *
-        FROM cte
-    )
--- 99. How much does the person who developed the highest selling package
--- earn and what course did he/she undergo?
-SELECT
-    P.PNAME,
-    P.SALARY,
-    ST.COURSE
-FROM Software s
-INNER JOIN Programmer P On P.PNAME = s.PNAME
-INNER JOIN Studies St ON St.PNAME = s.PNAME
-WHERE s.SOLD IN (
-    SELECT
-        MAX(SOLD)
-    FROM Software
-)
--- 100. What is the average salary for those whose software sales is more than 50,000?
-SELECT
-    AVG(P.SALARY) AS [AVG SALARY]
-FROM Software s
-INNER JOIN Programmer P On P.PNAME = s.PNAME
-WHERE (S.SCOST*S.SOLD) > 50000
-
--- 101. How many packages were developed by students who studied in
--- institutes that charge the lowest course fee?
-SELECT
-    COUNT(DISTINCT(S.TITLE)) AS [PACKAGES_DEVELOPED]
-FROM Software S
-INNER JOIN Studies ST ON ST.PNAME = S.PNAME
-WHERE ST.COURSE_FEE = (
-    SELECT
-        MIN(COURSE_FEE)
-    FROM Studies
-)
--- 102. How many packages were developed by the person who developed the cheapest package? Where did he/she study?
-
-    SELECT
-        S.PNAME,
-        ST.INSTITUTE,
-        COUNT(S.TITLE) AS [packages Developed]
-    FROM Software S
-    INNER JOIN Studies ST ON ST.PNAME = S.PNAME
-    GROUP BY S.PNAME, ST.INSTITUTE
-    HAVING S.PNAME IN
-    (
-        SELECT
-            PNAME
-        FROM Software
-        WHERE SCOST = (
-            SELECT
-                MIN(SCOST)
-            FROM Software
-        )
-    )
-
-
-SELECT
-    COUNT(*)
-
--- 103. How many packages were developed by female programmers earning
--- more than the highest paid male programmer?
-SELECT
-    COUNT(DISTINCT(S.TITLE)) AS [PACKAGES_DEVELOPED]
-FROM Software S
-INNER JOIN Programmer P ON P.PNAME = S.PNAME
-WHERE P.GENDER = 'F' AND P.SALARY > (
-    SELECT 
-        MAX(SALARY)
-    FROM Programmer
-    WHERE GENDER = 'M'
-)
-
--- 104. How many packages are developed by the most experienced
--- programmers from BDPS?
-SELECT
-    COUNT(DISTINCT(S.TITLE)) AS [PACKAGES_DEVELOPED]
-FROM Software S
-INNER JOIN Studies ST ON ST.PNAME = S.PNAME
-INNER JOIN Programmer P ON P.PNAME = S.PNAME
-WHERE ST.INSTITUTE = 'BDPS' AND P.DOJ = (
-    SELECT 
-        MIN(DOJ)
-    FROM Programmer
-)
-
--- 105. List the programmers (from the software table) and the institutes they studied at.
-SELECT
-    S.PNAME,
-    ST.INSTITUTE
-FROM Software S
-INNER JOIN Studies ST ON ST.PNAME = S.PNAME
--- 106. List each PROF with the number of programmers having that PROF and the number of the packages in that PROF.
-
-WITH cte
-  AS
-  (
-  SELECT prof1 FROM Programmer
-  UNION ALL
-  SELECT prof2 FROM Programmer
-  )
-  SELECT prof1, COUNT(*) AS [no. OF programmers]
-  INTO prof_table
-  FROM cte 
-  GROUP BY PROF1
-
-  SELECT PROF1, COUNT(*) AS [No. OF packages] INTO soft_table FROM prof_table p
-  JOIN Software s ON  p.PROF1 = s.DEVELOPIN
-  GROUP BY prof1 
-
-  SELECT p.PROF1, p.[no. OF programmers] ,s.[No. OF packages] FROM prof_table p
-  JOIN soft_table s on p.PROF1 =s.PROF1
-  
--- 107. List the programmer names (from the programmer table) and the number of packages each has developed
-    SELECT
-        P.PNAME,
-        COUNT(*) as [NUMBER Packages developed]
-    FROM Programmer P
-    INNER JOIN Software s On s.PNAME = P.PNAME
-    WHERE S.DEVELOPIN IN (P.PROF1, P.PROF2)
-    GROUP BY P.PNAME
+-- 63. Who developed the package that has sold the least number of copies?
+-- 64. Which language has been used to develop the package which has the
+-- highest sales amount?
+-- 65. How many copies of the package that has the least difference between
+-- development and selling cost were sold?
+-- 66. Which is the costliest package developed in Pascal?
+-- 67. Which language was used to develop the most number of packages?
+-- 68. Which programmer has developed the highest number of packages?
+-- 69. Who is the author of the costliest package?
+-- 70. Display the names of the packages which have sold less than the
+-- average number of copies.
+-- 71. Who are the authors of the packages which have recovered more than
+-- double the development cost?
+-- 72. Display the programmer names and the cheapest packages developed
+-- by them in each language.
+-- 73. Display the language used by each programmer to develop the highest
+-- selling and lowest selling package.
+-- 74. Who is the youngest male programmer born in 1965?
+-- 75. Who is the oldest female programmer who joined in 1992?
+-- 76. In which year was the most number of programmers born?
+-- 77. In which month did the most number of programmers join?
+-- 78. In which language are most of the programmer’s proficient?
+-- 79. Who are the male programmers earning below the average salary of
+-- female programmers?
