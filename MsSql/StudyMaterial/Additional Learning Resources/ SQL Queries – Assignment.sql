@@ -292,7 +292,7 @@ select * from Studies
     SELECT 
         s.PNAME, 
         S.TITLE, 
-        S.DCOST into #temp_table FROM cte INNER JOIN Software s on s.PNAME = cte.Pname
+        S.DCOST FROM cte INNER JOIN Software s on s.PNAME = cte.Pname
     where s.DCOST IN(cte.CHEPEST_PKG, cte.COSTLIEST_PKG)
 
 -- 36. Display each institute’s name with the number of courses and the average cost per course.
@@ -709,32 +709,26 @@ select * from Studies
     WHERE SCOST*SOLD > 2*DCOST
 
 -- 72. Display the programmer names and the cheapest packages developed by them in each language.
-    SELECT
-        DISTINCT PNAME,
-        TITLE
-    FROM Software
-    WHERE SCOST = (
-        SELECT
-            MIN(SCOST)
-        FROM Software
-    )
+    select s.pname, s.title as cheapest_title, s.DEVELOPIN, p.mincost
+    from software s
+    join (
+        select pname, developin, MIN(dcost) as mincost 
+        from software 
+        group by pname, DEVELOPIN
+        ) p on (s.pname = p.pname and s.dcost= p.mincost and s.DEVELOPIN = p.DEVELOPIN)
 -- 73. Display the language used by each programmer to develop the highest selling and lowest selling package.
-    SELECT
-        PNAME,
-        DEVELOPIN,
-        SOLD
-    FROM Software
-    WHERE SOLD = (
-        SELECT
-            MIN(SOLD)
-        FROM Software
-    )
-    OR
-    SOLD = (
-        SELECT
-            MAX(SOLD)
-        FROM Software
-    )
+    select s.pname, s.title as mintitle, s.DEVELOPIN,mincost, t.maxtitle,t.DEVELOPIN, t.maxcost
+    from software s
+    join (select pname, MIN(dcost) as mincost from software group by pname) p  on (s.pname = p.pname and s.dcost= p.mincost)
+    join
+    (
+        select a.pname, a.title as maxtitle,a.DEVELOPIN ,b.maxcost
+        from software a
+        join (select pname, MAX(dcost) as maxcost from software group by pname) b on (a.pname = b.pname and a.dcost= b.maxcost)
+    ) t on s.pname = t.pname
+
+
+
 -- 74. Who is the youngest male programmer born in 1965?
     SELECT 
         PNAME
