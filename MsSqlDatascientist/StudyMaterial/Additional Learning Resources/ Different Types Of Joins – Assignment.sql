@@ -43,3 +43,8 @@
 
 -- 4. Update the ‘Orders’ table and set the amount to be 100 where ‘customer_id’ is 3
     UPDATE ORDERS SET AMOUNT = 100 WHERE CUSTOMER_ID = 3
+
+-- 5. Make a full outer join on ‘Customer’ and ‘Orders’ table on the ‘customer_id’ column.
+    SELECT * FROM CUSTOMERS C
+    FULL OUTER JOIN ORDERS O ON C.CUSTOMER_ID = O.CUSTOMER_ID
+

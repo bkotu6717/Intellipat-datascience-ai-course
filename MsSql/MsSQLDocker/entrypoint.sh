@@ -1,2 +1,0 @@
-/bin/sh
-docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=yourStrongP@ssword133" -e "MSSQL_PID=Evaluation" -p 1433:1433  --name MSSQLServer --hostname MSSQLServer -d mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
