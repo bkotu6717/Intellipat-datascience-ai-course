@@ -11,14 +11,14 @@
 # b. Now create an object for the child_Class and with the help of
 # child_Class object, display the value of ‘num’.
 
-# class ParentClass:
-#   num = 10
+class ParentClass:
+  num = 10
 
-# class ChildClass(ParentClass):
-#   pass
+class ChildClass(ParentClass):
+  pass
 
-# cc = ChildClass()
-# print("cc.num from parent calss: ", cc.num)
+cc = ChildClass()
+print("cc.num from parent calss: ", cc.num)
 
 # 2. Create three classes named A, B and C
 
@@ -153,11 +153,11 @@ class Parent:
   def fun1(self):
     print('This is the message from the fun1')
 
-class Child:
+class Child(Parent):
   def fun2(self):
     print('This is the message from the fun2')
 
-class Hybrid(Parent, Child):
+class Hybrid(Child):
   def fun3(self):
     print('This is the message from the fun3')
 
