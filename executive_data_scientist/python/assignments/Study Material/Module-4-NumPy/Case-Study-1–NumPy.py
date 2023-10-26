@@ -21,10 +21,10 @@ print(create_numpy_array((10,10), 3))
 # sums them and returns the answer.
 
 def sum_numpy_arrays(*args):
-  sum_array = args[0]
+  sum_matrix = args[0]
   for x in args[1:]:
-    sum_array = np.add(sum_array, x)
-  return sum_array
+    sum_matrix = np.add(sum_matrix, x)
+  return sum_matrix
 
 np_arrays = []
 for x in range(1,6):
@@ -46,6 +46,17 @@ print(sum_numpy_arrays(*np_arrays))
 # [4, 5]
 # ]
 
+def top_left_sub_matrix(matrix, m, n):
+  matrix_shape = matrix.shape
+  if (m < matrix_shape[0] and n < matrix_shape[1]):
+    # return(matrix[0:m, 1:n+1]) # Right submatirx
+    return matrix[0:m, 0:n] # Left submatrix
+  else:
+    return 'Invalid sub matrix expected.'
+
+matrix = np.array([[1,2,3],[4,5,6],[7,8,9]])
+print(top_left_sub_matrix(matrix, 2, 2))
+
 # 4. Given a 2 D Array of N X M Dimension, write a function that accepts this
 # array as well as two numbers N and M. The method should return the
 # bottom-right N X M sub matrix, e.g:
@@ -61,6 +72,19 @@ print(sum_numpy_arrays(*np_arrays))
 # [8, 9]
 # ]
 
+def bottom_right_sub_matrix(matrix, m, n):
+  matrix_shape = matrix.shape
+  if (m < matrix_shape[0] and n < matrix_shape[1]):
+    row_start = matrix_shape[0] - m
+    col_start = matrix_shape[1] - n
+    # return(matrix[0:m, 1:n+1]) # Right submatirx
+    return matrix[row_start:, col_start:] # Left submatrix
+  else:
+    return 'Invalid sub matrix expected.'
+
+matrix = np.array([[1,2,3,4],[4,5,6,7],[7,8,9,10], [11,12,13,14]])
+print(bottom_right_sub_matrix(matrix, 2, 5))
+
 # 5. Given a 1 D NumPy Array. Write a function that accepts this array as
 # parameters. The method should return a dictionary with 'mean' and
 # 'std_dev' as key and array's mean and array's standard deviation as
@@ -68,3 +92,7 @@ print(sum_numpy_arrays(*np_arrays))
 # [1, 1, 1]
 # solution(arr) -> should return :
 # {'mean': 1.0, 'std_dev': 0.0}
+
+# Todo when statistics is covered
+
+
