@@ -29,7 +29,7 @@
   Inter Quartile Range(IQR):  Difference between lower and upper quartile
   range = Q4 - Q1
   ```
+<img width="1138" alt="percentile_vs_quartiles" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/45724854-1272-480d-989f-a569d3e71d72">
+<img width="1139" alt="types_of_stats" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/60fdd2dd-4e71-468d-8cc7-dca6089dc8ec">
 
-<img src="Statistics/types_of_stats.png" alt="Types of stats" width="500" height="600">
-<img src="Statistics/percentile_vs_quartiles.png" alt="Percentile vs Quartiles" width="500" height="600">
 
