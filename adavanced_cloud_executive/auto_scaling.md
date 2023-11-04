@@ -30,3 +30,5 @@ Create launch template
 #### Now create the ASG
 - Select the launch template created in Step #3
 - Set the minimum, desired and maximum instances count
+
+> Now there should be 3 instances created if we check in EC2 instances list
