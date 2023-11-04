@@ -25,6 +25,11 @@
   All the qurartiles are percentiles but all the percentiles are not quartiles
   ```
 
-<img src="types_of_stats.png" alt="Types of stats" width="500" height="600">
-<img src="percentile_vs_quartiles.png" alt="Percentile vs Quartiles" width="500" height="600">
+  ```
+  Inter Quartile Range(IQR):  Difference between lower and upper quartile
+  range = Q4 - Q1
+  ```
+
+<img src="Statistics/types_of_stats.png" alt="Types of stats" width="500" height="600">
+<img src="Statistics/percentile_vs_quartiles.png" alt="Percentile vs Quartiles" width="500" height="600">
 
