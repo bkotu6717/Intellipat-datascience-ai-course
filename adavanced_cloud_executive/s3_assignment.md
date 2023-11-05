@@ -11,9 +11,6 @@
 
 <img width="1508" alt="webpage" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/f292a00a-b7a2-4295-9975-13c8bdb87de7">
 
-<img width="1508" alt="webpage" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/5c52b3b3-ee6a-403f-b481-e3a54c63dcdc">
-
-
   - Also add the life cycle rule for the bucket
     - a. Transition from Standard to Standard IA in 60 days
     - b. Expiration in 200 days
