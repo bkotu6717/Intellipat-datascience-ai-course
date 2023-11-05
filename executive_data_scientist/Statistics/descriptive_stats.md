@@ -32,6 +32,8 @@
   Inter Quartile Range(IQR):  Difference between lower and upper quartile
   range = Q4 - Q1
   ```
+  ### Quartiles with box plot
+  <img width="1512" alt="quartiles_with_box_plot" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/49d99cb9-dd47-4732-b9b2-bd7e00644e39">
 
   ```
   Standard variance: measures how far a set of numbers are spread from a mean value
