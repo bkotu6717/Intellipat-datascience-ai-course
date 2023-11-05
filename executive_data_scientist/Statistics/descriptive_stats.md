@@ -36,11 +36,15 @@
   ```
   Standard variance: measures how far a set of numbers are spread from a mean value
   ```
+  <img width="1512" alt="standard_variance" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/ffbf10b1-8ac2-4d5a-806d-5aac0322fc94">
 
+  
   ```
   Standard Deviation: exact magnitude by which each point has spread out
   standard deviation = squart root of (standard variance)
   ```
+  
+  <img width="1508" alt="standard_deviation" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/983af0c0-5f54-4d54-9623-d0feb5b4dcbc">
 
   ```
   Correlation: is a term that measures the linear relationship between two variables
@@ -49,7 +53,9 @@
   No correlation: 0
   Positive correlation: 0 to 1
   ```
+  <img width="1056" alt="postive_correlation" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/31fd8464-3303-4043-9b3d-07a5b9cc7200">
 
+  
   ```
   Hypothesis testing and estimation: TBD
   ```
@@ -57,6 +63,7 @@
   # Probability
 
   > Defines the likelyhood of occurance of an event occurs
+  <img width="1508" alt="probability" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/e7ec613b-4692-44b1-a012-cd5f6f9ed46d">
 
   
 
