@@ -16,3 +16,5 @@
     - b. Expiration in 200 days
       <img width="1394" alt="life_cycle_rules" src="https://github.com/bkotu6717/Intellipat-datascience-ai-course/assets/60086729/b1df007e-61f7-4a04-b320-119840de9428">
 
+# S3 Object lambda access point
+
