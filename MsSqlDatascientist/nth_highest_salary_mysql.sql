@@ -6,6 +6,7 @@ FROM employees
 ORDER BY salary DESC
 LIMIT 0, 1;
 
+select salary from employees order by salary desc limit 1 offset 0;
 -- LIMIT 0,1 -> Offest 0 and Limit 1
 
 -- Find the second highest salary
@@ -15,6 +16,8 @@ FROM employees
 ORDER BY salary DESC
 LIMIT 1, 1;
 -- LIMIT 1,1 -> Offest 1 and Limit 1
+select salary from employees order by salary desc limit 1 offset 1;
+
 
 
 -- Find the third highest salary
@@ -24,6 +27,8 @@ FROM employees
 ORDER BY salary DESC
 LIMIT 2, 1;
 -- LIMIT 2,1 -> Offest 2 and Limit 1
+select salary from employees order by salary desc limit 1 offset 2;
+
 
 
 -- Find the 4th highest salary
@@ -33,4 +38,6 @@ FROM employees
 ORDER BY salary DESC
 LIMIT 3, 1;
 -- LIMIT 2,1 -> Offest 3 and Limit 1
+select salary from employees order by salary desc limit 1 offset 3;
+
 
